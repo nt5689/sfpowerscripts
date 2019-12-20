@@ -7,9 +7,9 @@
     "category": "Utility",
     "author": "azlam.abdulsalam",
     "version": {
-        "Major": 3,
-        "Minor": 3,
-        "Patch": 2
+        "Major": 4,
+        "Minor": 0,
+        "Patch": 0
     },
     "runsOn": [
         "Agent"
@@ -32,6 +32,14 @@
             "required": false,
             "helpMarkDown": "The version of sfpowerkit that should be installed, by default it is the latest "
         },
+        {
+            "name": "plugins",
+            "type": "string",
+            "label": "SFPowerkit Version",
+            "defaultValue": "",
+            "required": false,
+            "helpMarkDown": "Provide the list of other plugins seperated by comma"
+        }
         {
             "name": "isTelemetryEnabled",
             "type": "boolean",
