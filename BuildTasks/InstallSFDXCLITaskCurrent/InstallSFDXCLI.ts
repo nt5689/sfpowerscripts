@@ -18,6 +18,7 @@ async function run() {
     let plugins:string[]=[];
     let sfdx_homedirectory;
     let whitelistpath="";
+   
 
 
     if(!isNullOrUndefined(sfdx_plugins))
@@ -27,7 +28,8 @@ async function run() {
 
 
     if (tl.getVariable("Agent.OS") == "Windows_NT") {
-      child_process.execSync(`npm install -g sfdx-cli@${cli_version}`);
+      let output = child_process.execSync(`npm install -g sfdx-cli@${cli_version}`);
+      console.log(output);
       sfdx_homedirectory=process.env.LOCALAPPDATA;
       whitelistpath = path.join(sfdx_homedirectory, "sfdx");
     } else {
@@ -53,15 +55,16 @@ async function run() {
     console.log(`Whitelisting Plugins`)
     console.log(pluginsToWhitelist);
     
-   
-    fs.writeJSONSync(whitelistpath,pluginsToWhitelist);
+    fs.ensureDirSync(whitelistpath);
+    fs.writeJSONSync(path.join(whitelistpath,'unsignedPluginWhiteList.json'),pluginsToWhitelist);
 
 
     plugins.forEach(element => {
       console.log(`Installing Plugin ${element}`)
-      child_process.execSync(
+      let output = child_process.execSync(
         `sfdx plugins:install ${element}`
       );
+      console.log(output);
 
     });
    
