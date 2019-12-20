@@ -19,8 +19,12 @@ async function run() {
 
 
     if (tl.getVariable("Agent.OS") == "Windows_NT") {
-      if(fs.existsSync(path.join(process.env.LOCALAPPDATA,'sfdx','key.json')))
+      if(fs.existsSync(path.join(process.env.LOCALAPPDATA,'sfdx','key.json'))) {
+      
+        tl.debug("Removing key.json")
         fs.unlinkSync(path.join(process.env.LOCALAPPDATA,'sfdx','key.json'));
+      }
+        
     }
 
     if (method == "JWT") {
