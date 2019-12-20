@@ -3,6 +3,9 @@ import child_process = require("child_process");
 import * as secureFilesCommon from "../Common/SecureFileHelpers";
 import { isNullOrUndefined } from "util";
 import { AppInsights } from "../Common/AppInsights";
+import fs = require("fs-extra");
+import path = require("path");
+
 
 async function run() {
   try {
@@ -13,6 +16,12 @@ async function run() {
 
     AppInsights.setupAppInsights(tl.getBoolInput("isTelemetryEnabled",true));
     AppInsights.trackTask("sfpwowerscript-authenticateorg-task");
+
+
+    if (tl.getVariable("Agent.OS") == "Windows_NT") {
+      if(fs.existsSync(path.join(process.env.LOCALAPPDATA,'sfdx','key.json')))
+        fs.unlinkSync(path.join(process.env.LOCALAPPDATA,'sfdx','key.json'));
+    }
 
     if (method == "JWT") {
       const jwt_key_file: string = tl.getInput("jwt_key_file", true);
