@@ -24,7 +24,16 @@ async function run() {
         tl.debug("Removing key.json")
         fs.unlinkSync(path.join(process.env.LOCALAPPDATA,'sfdx','key.json'));
       }
-        
+      if(fs.existsSync(path.join(process.env.APPDATA,'sfdx','key.json'))) {
+      
+        tl.debug("Removing key.json")
+        fs.unlinkSync(path.join(process.env.APPDATA,'sfdx','key.json'));
+      }
+      if(fs.existsSync(path.join( require('os').homedir(),'sfdx','key.json'))) {
+      
+        tl.debug("Removing key.json")
+        fs.unlinkSync(path.join( require('os').homedir(),'sfdx','key.json'));
+      }   
     }
 
     if (method == "JWT") {
