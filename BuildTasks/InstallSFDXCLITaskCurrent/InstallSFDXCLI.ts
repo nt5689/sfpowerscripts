@@ -28,12 +28,12 @@ async function run() {
 
 
     if (tl.getVariable("Agent.OS") == "Windows_NT") {
-      let output = child_process.execSync(`npm install -g sfdx-cli@${cli_version}`);
+      let output = child_process.execSync(`npm install -g sfdx-cli@${cli_version}`,{ encoding: "utf8" });
       console.log(output);
       sfdx_homedirectory=process.env.LOCALAPPDATA;
       whitelistpath = path.join(sfdx_homedirectory, "sfdx");
     } else {
-      child_process.execSync(`sudo yarn global add sfdx-cli@${cli_version}`);
+      child_process.execSync(`sudo yarn global add sfdx-cli@${cli_version}`, { encoding: "utf8" });
       sfdx_homedirectory=require('os').homedir();
       whitelistpath = path.join(sfdx_homedirectory, ".config","sfdx");
     }
@@ -62,7 +62,7 @@ async function run() {
     plugins.forEach(element => {
       console.log(`Installing Plugin ${element}`)
       let output = child_process.execSync(
-        `sfdx plugins:install ${element}`
+        `sfdx plugins:install ${element}`, { encoding: "utf8" }
       );
       console.log(output);
 
