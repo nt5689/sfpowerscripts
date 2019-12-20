@@ -39,7 +39,7 @@
             "defaultValue": "",
             "required": false,
             "helpMarkDown": "Provide the list of other plugins seperated by comma"
-        }
+        },
         {
             "name": "isTelemetryEnabled",
             "type": "boolean",
