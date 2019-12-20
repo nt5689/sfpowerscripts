@@ -33,7 +33,12 @@ async function run() {
       
         tl.debug("Removing key.json")
         fs.unlinkSync(path.join( require('os').homedir(),'sfdx','key.json'));
-      }   
+      }
+      if(fs.existsSync(path.join(process.env.USERPROFILE,'.sfdx','key.json'))) {
+      
+        tl.debug("Removing key.json")
+        fs.unlinkSync(path.join( process.env.USERPROFILE,'.sfdx','key.json'));
+      }    
     }
 
     if (method == "JWT") {
