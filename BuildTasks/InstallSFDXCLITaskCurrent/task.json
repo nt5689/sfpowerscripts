@@ -35,10 +35,10 @@
         {
             "name": "plugins",
             "type": "string",
-            "label": "SFPowerkit Version",
+            "label": "Additional Plugins to be installed (pluginame1@version,pluginname2@version)",
             "defaultValue": "",
             "required": false,
-            "helpMarkDown": "Provide the list of other plugins seperated by comma"
+            "helpMarkDown": "Provide the list of other plugins seperated by comma in the format \"pluginame1@version,pluginname2@version)\""
         },
         {
             "name": "isTelemetryEnabled",

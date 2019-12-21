@@ -5,6 +5,7 @@ import { isNullOrUndefined } from "util";
 import { AppInsights } from "../Common/AppInsights";
 import fs = require("fs-extra");
 import path = require("path");
+const nanoid = require('nanoid')
 
 
 async function run() {
@@ -19,26 +20,14 @@ async function run() {
 
 
     if (tl.getVariable("Agent.OS") == "Windows_NT") {
-      if(fs.existsSync(path.join(process.env.LOCALAPPDATA,'sfdx','key.json'))) {
-      
-        tl.debug("Removing key.json")
-        fs.unlinkSync(path.join(process.env.LOCALAPPDATA,'sfdx','key.json'));
-      }
-      if(fs.existsSync(path.join(process.env.APPDATA,'sfdx','key.json'))) {
-      
-        tl.debug("Removing key.json")
-        fs.unlinkSync(path.join(process.env.APPDATA,'sfdx','key.json'));
-      }
-      if(fs.existsSync(path.join( require('os').homedir(),'sfdx','key.json'))) {
-      
-        tl.debug("Removing key.json")
-        fs.unlinkSync(path.join( require('os').homedir(),'sfdx','key.json'));
-      }
-      if(fs.existsSync(path.join(process.env.USERPROFILE,'.sfdx','key.json'))) {
-      
-        tl.debug("Removing key.json")
-        fs.unlinkSync(path.join( process.env.USERPROFILE,'.sfdx','key.json'));
-      }    
+    
+      tl.debug("Writing key.json");
+      let keyFilePath=path.join(process.env.USERPROFILE,'.sfdx','key.json');
+      let keyObj={};
+      keyObj["service"]="sfdx";
+      keyObj["account"]="local";
+      keyObj["key"]=nanoid(32);
+      fs.writeJSONSync(keyFilePath,keyObj);
     }
 
     if (method == "JWT") {
