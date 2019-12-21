@@ -82,7 +82,7 @@ async function run() {
             remote,
             `HEAD:${tl
               .getVariable("Build.SourceBranch")
-              .substring(tl.getVariable("Build.SourceBranch").indexOf("/", 5))}`
+              .substring(tl.getVariable("Build.SourceBranch").indexOf("/", 5)+1)}`
           );
       }
     }
