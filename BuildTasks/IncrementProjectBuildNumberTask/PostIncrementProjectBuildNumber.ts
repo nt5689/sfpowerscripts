@@ -10,7 +10,7 @@ async function run() {
 
     if (isPushChanges) {
 
-      
+
       if (tl.getVariable("Agent.JobStatus") == "Succeeded") {
         const version_control_provider: string = tl.getInput(
           "versionControlProvider",
@@ -80,7 +80,9 @@ async function run() {
 
         await git
           .silent(false)
-          .push(remote, tl.getVariable("Build.SourceBranch"));
+          .addRemote('origin',remote);
+        
+         await git.push(origin, tl.getVariable("Build.SourceBranch"),{refspec:'HEAD'});
       }
     }
 
