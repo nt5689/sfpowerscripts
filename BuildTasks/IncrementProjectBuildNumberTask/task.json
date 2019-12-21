@@ -9,7 +9,7 @@
   "version": {
     "Major": 3,
     "Minor": 0,
-    "Patch": 1
+    "Patch": 2
   },
   "runsOn": ["Agent"],
   "instanceNameFormat": "Increments the $(segment) version number ",
@@ -45,6 +45,14 @@
       "helpMarkDown": "Mark this if you want to commit the sfdx-project json to the repository, Please note this will not push to the repo only commits in the local checked out repo, You would need to have a push to the repo at the end of the packaging task if everything is successfull"
     },
     {
+      "name": "pushchanges",
+      "type": "boolean",
+      "label": "Push changes to the repository if every subsequent tasks succeed",
+      "defaultValue": false,
+      "required": false,
+      "helpMarkDown": "Mark this if you want to push the committed  sfdx-project json to the repository with the incremented version if every subsequent task succeeds"
+    },
+    {
       "name": "package",
       "type": "string",
       "label": "SFDX Package ",
@@ -59,14 +67,6 @@
       "defaultValue": "",
       "required": false,
       "helpMarkDown": "The  directory should contain a sfdx-project.json for this command to succeed"
-    },
-    {
-      "name": "pushchanges",
-      "type": "boolean",
-      "label": "Push changes to the repository",
-      "defaultValue": true,
-      "required": false,
-      "helpMarkDown": "Mark this if you want to push the committed  sfdx-project json to the repository"
     },
     {
       "name": "versionControlProvider",
