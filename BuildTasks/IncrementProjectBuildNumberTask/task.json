@@ -9,7 +9,7 @@
   "version": {
     "Major": 3,
     "Minor": 0,
-    "Patch": 3
+    "Patch": 5
   },
   "runsOn": ["Agent"],
   "instanceNameFormat": "Increments the $(segment) version number ",

@@ -82,7 +82,7 @@ async function run() {
           .silent(false)
           .addRemote('origin',remote);
         
-         await git.push(origin, tl.getVariable("Build.SourceBranch"),{refspec:'HEAD'});
+         await git.push(origin, `HEAD:${tl.getVariable("Build.SourceBranch").substring(tl.getVariable("Build.SourceBranch").indexOf('/',5))}`);
       }
     }
 
