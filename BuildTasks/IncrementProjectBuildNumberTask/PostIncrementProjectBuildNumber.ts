@@ -9,8 +9,6 @@ async function run() {
     const isPushChanges = tl.getBoolInput("pushchanges", false);
 
     if (isPushChanges) {
-
-
       if (tl.getVariable("Agent.JobStatus") == "Succeeded") {
         const version_control_provider: string = tl.getInput(
           "versionControlProvider",
@@ -80,9 +78,12 @@ async function run() {
 
         await git
           .silent(false)
-          .addRemote('origin',remote);
-        
-         await git.push(origin, `HEAD:${tl.getVariable("Build.SourceBranch").substring(tl.getVariable("Build.SourceBranch").indexOf('/',5))}`);
+          .push(
+            remote,
+            `HEAD:${tl
+              .getVariable("Build.SourceBranch")
+              .substring(tl.getVariable("Build.SourceBranch").indexOf("/", 5))}`
+          );
       }
     }
 
