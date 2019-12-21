@@ -32,8 +32,16 @@ async function run() {
       console.log(output);
       sfdx_homedirectory=process.env.LOCALAPPDATA;
       whitelistpath = path.join(sfdx_homedirectory, "sfdx");
-    } else {
-      child_process.execSync(`sudo yarn global add sfdx-cli@${cli_version}`, { encoding: "utf8" });
+    } else if(tl.getVariable("Agent.OS") == "Darwin")
+    {
+      let output = child_process.execSync(`npm install -g sfdx-cli@${cli_version}`,{ encoding: "utf8" });
+      console.log(output);
+      sfdx_homedirectory=require('os').homedir();
+      whitelistpath = path.join(sfdx_homedirectory, "sfdx");
+    }
+    else {
+      let output= child_process.execSync(`sudo yarn global add sfdx-cli@${cli_version}`, { encoding: "utf8" });
+      console.log(output);
       sfdx_homedirectory=require('os').homedir();
       whitelistpath = path.join(sfdx_homedirectory, ".config","sfdx");
     }
