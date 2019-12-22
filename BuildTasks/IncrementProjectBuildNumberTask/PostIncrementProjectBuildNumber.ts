@@ -7,9 +7,13 @@ async function run() {
     AppInsights.setupAppInsights(tl.getBoolInput("isTelemetryEnabled", true));
 
     const isPushChanges = tl.getBoolInput("pushchanges", false);
+    const pushOption = tl.getInput("pushoption",false);
+
+    let isToBePushed = pushOption == 'onSuccess'?  tl.getVariable("Agent.JobStatus") == "Succeeded" :true;
 
     if (isPushChanges) {
-      if (tl.getVariable("Agent.JobStatus") == "Succeeded") {
+
+      if (isToBePushed) {
         const version_control_provider: string = tl.getInput(
           "versionControlProvider",
           true
@@ -84,6 +88,10 @@ async function run() {
               .getVariable("Build.SourceBranch")
               .substring(tl.getVariable("Build.SourceBranch").indexOf("/", 5)+1)}`
           );
+      }
+      else
+      {
+        console.log("Skipping push to repository as previous tasks has failed")
       }
     }
 
