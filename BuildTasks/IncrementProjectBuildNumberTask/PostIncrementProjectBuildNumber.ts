@@ -88,6 +88,7 @@ async function run() {
               .getVariable("Build.SourceBranch")
               .substring(tl.getVariable("Build.SourceBranch").indexOf("/", 5)+1)}`
           );
+       console.log(`Pushed Incrmented sfdx-project.json to repository ${repository_url}`);
       }
       else
       {

@@ -63,7 +63,7 @@
     {
       "name": "pushchanges",
       "type": "boolean",
-      "label": "Push incremented version changes to the repository if every subsequent tasks succeed",
+      "label": "Push incremented version changes to the repository",
       "defaultValue": false,
       "required": false,
       "helpMarkDown": "Mark this if you want to push the committed  sfdx-project json to the repository with the incremented version if every subsequent task succeeds"
@@ -71,7 +71,7 @@
     {
       "name": "pushoption",
       "type": "radio",
-      "label": "Push Changes only if",
+      "label": "Select a condtion for pushing the incremented version",
       "required": false,
       "defaultValue": "onSuccess",
       "options": {
