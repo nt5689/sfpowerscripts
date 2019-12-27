@@ -5,22 +5,10 @@ export default class TriggerApexTestImpl {
   public constructor(private target_org: string, private test_options: any) {}
 
   public async exec(): Promise<void> {
-    let testExecCommand = this.buildTestExecCommand();
-
-    let result = child_process.execSync(testExecCommand, {
-      encoding: "utf8",
-      stdio: ["pipe", "pipe", "ignore"]
-    });
-
-    let resultAsJSON = JSON.parse(result);
-    let testRunId: string;
-    if (resultAsJSON.status == 0) {
-      testRunId = resultAsJSON.result.testRunId;
-    } else throw new Error("Triggering Apex Test Run Failed");
-
+    
     //Print Test in Human Reable Format and also store it in staging directory
     let child = child_process.exec(
-      this.buildTestReportCommand(testRunId,'human'),
+      this.buildExecCommand(),
       { encoding: "utf8" },
       (error, stdout, stderr) => {
         if (error) throw error;
@@ -32,18 +20,19 @@ export default class TriggerApexTestImpl {
     });
 
     await onExit(child);
-
-    
   }
 
-  private buildTestExecCommand(): string {
+  private buildExecCommand(): string {
     let command = `npx sfdx force:apex:test:run -u ${this.target_org}`;
 
-    //output
-    command += ` --json`;
+    if (this.test_options["synchronous"] == true) command += ` -y`;
 
-    if(this.test_options['synchronous']==true)
-    command += ` -y`;
+    command += ` -r human`;
+    //wait time
+    command += ` -w  ${this.test_options["wait_time"]}`;
+
+    //store result
+    command += ` -d  ${this.test_options["outputdir"]}`;
 
     //testlevel
     command += ` -l ${this.test_options["testlevel"]}`;
@@ -53,29 +42,9 @@ export default class TriggerApexTestImpl {
     } else if (this.test_options["testlevel"] == "RunApexTestSuite") {
       command += ` -s ${this.test_options["apextestsuite"]}`;
     }
-    console.log(`Generated Command: ${command}`)
+    console.log(`Generated Command: ${command}`);
     return command;
   }
 
-  private buildTestReportCommand(testRunId: string, format:string): string {
-    let command = `npx sfdx force:apex:test:report -u ${this.target_org}`;
 
-    command += ` -r ${format}`;
-
-    command += ` -c`;
-
-    //testid
-    command += ` -i ${testRunId}`;
-
-    //wait time
-    command += ` -w  ${this.test_options["wait_time"]}`;
-
-    //store result
-    command += ` -d  ${this.test_options["outputdir"]}`;
-
-    console.log(`Generated Command: ${command}`)
-    return command;
-  }
-
-  
 }
