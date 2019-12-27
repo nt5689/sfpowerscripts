@@ -6,12 +6,13 @@ import path = require("path");
 import os = require("os");
 
 async function run() {
+  let test_options = {};
+
   try {
     
     AppInsights.setupAppInsights(tl.getBoolInput("isTelemetryEnabled",true));
     const target_org: string = tl.getInput("target_org", true);
-    let test_options = {};
-
+  
     test_options["wait_time"] = tl.getInput("wait_time", true);
 
     test_options["testlevel"] = tl.getInput("testlevel", true);
@@ -37,7 +38,7 @@ async function run() {
     console.log("Executing command");
     await triggerApexTestImpl.exec();
 
-    publishTestResults(test_options['outputdir']);
+  
 
     AppInsights.trackTask("sfpwowerscript-triggerapextest-task");
     AppInsights.trackTaskEvent("sfpwowerscript-triggerapextest-task","apex_test_triggered");    
@@ -45,6 +46,10 @@ async function run() {
   } catch (err) {
     AppInsights.trackExcepiton("sfpwowerscript-triggerapextest-task",err);    
     tl.setResult(tl.TaskResult.Failed, err.message);
+  }
+  finally
+  {
+    publishTestResults(test_options['outputdir']);
   }
 }
 

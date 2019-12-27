@@ -18,7 +18,7 @@ export default class TriggerApexTestImpl {
       testRunId = resultAsJSON.result.testRunId;
     } else throw new Error("Triggering Apex Test Run Failed");
 
-    //First Lets print in Human for human readable
+    //Print Test in Human Reable Format and also store it in staging directory
     let child = child_process.exec(
       this.buildTestReportCommand(testRunId,'human'),
       { encoding: "utf8" },
@@ -34,16 +34,6 @@ export default class TriggerApexTestImpl {
     await onExit(child);
 
     
-    //Reprint the report in junit and make it silent
-     child = child_process.exec(
-      this.buildTestReportCommand(testRunId,'junit'),
-      { encoding: "utf8" },
-      (error, stdout, stderr) => {
-        if (error) throw error;
-      }
-    );
-    await onExit(child);
-
   }
 
   private buildTestExecCommand(): string {
