@@ -7,9 +7,9 @@
     "category": "Build",
     "author": "azlam.abdulsalam",
     "version": {
-        "Major": 2,
+        "Major": 3,
         "Minor": 0,
-        "Patch": 1
+        "Patch": 0
     },
     "runsOn": [
         "Agent"
@@ -55,6 +55,14 @@
             "helpMarkDown": "comma-separated list of Apex test suite names to run",
             "required": true,
             "visibleRule": "testlevel = RunApexTestSuite"
+        },
+        {
+            "name": "synchronous",
+            "type": "boolean",
+            "label": "Run tests from a single class synchronously",
+            "defaultValue": false,
+            "helpMarkDown": "Select an option if the tests are to be run synchronously",
+            "required": false
         },
         {
             "name": "wait_time",
