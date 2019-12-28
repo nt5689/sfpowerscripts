@@ -12,7 +12,6 @@ async function run() {
 
 function publishTestResults(resultsDir: string): void {
 
-
   //Check if these files have been already read for publishing using a file as a flag
   const duplicateCheckFile = path.join(resultsDir, ".duplicateFile");
 
@@ -44,7 +43,7 @@ function publishTestResults(resultsDir: string): void {
       fs.writeJSONSync(duplicateCheckFile, { testsPublished: true });
     }
   } else {
-    console.log("Skipping Post Job as results are already published");
+    console.log("Skipping Post Job as results are already publishedgi");
   }
 }
 

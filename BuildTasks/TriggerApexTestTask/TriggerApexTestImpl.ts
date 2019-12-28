@@ -27,6 +27,8 @@ export default class TriggerApexTestImpl {
 
     if (this.test_options["synchronous"] == true) command += ` -y`;
 
+    command += ` -c`;
+
     command += ` -r human`;
     //wait time
     command += ` -w  ${this.test_options["wait_time"]}`;
