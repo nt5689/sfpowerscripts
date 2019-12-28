@@ -12,42 +12,39 @@ async function run() {
 
 function publishTestResults(resultsDir: string): void {
 
-  //Check if any files exist in the staging directory
-  const matchingTestResultsFiles: string[] = tl.findMatch(
-    resultsDir,
-    "*-junit.xml"
-  );
 
-  if (matchingTestResultsFiles && matchingTestResultsFiles.length > 0) {
-    //Create a arritfact directory which copies the whole results
-    //Workaround for publish command for not being async and to prevent duplicate addition when this post command is executed multiple times
-    let artifactDirectory: string = path.join(
-      tl.getVariable("build.artifactStagingDirectory"),
-      "testartifact"
-    );
-    fs.copySync(resultsDir, artifactDirectory);
+  //Check if these files have been already read for publishing using a file as a flag
+  const duplicateCheckFile = path.join(resultsDir, ".duplicateFile");
 
-    const junitResultFiles: string[] = tl.findMatch(
-      artifactDirectory,
+  if (!fs.existsSync(duplicateCheckFile)) {
+
+    //Check if any files exist in the staging directory
+    const matchingTestResultsFiles: string[] = tl.findMatch(
+      resultsDir,
       "*-junit.xml"
     );
 
-    const buildConfig = tl.getVariable("BuildConfiguration");
-    const buildPlaform = tl.getVariable("BuildPlatform");
-    const testRunTitle = "Apex Test Run";
+    if (matchingTestResultsFiles && matchingTestResultsFiles.length > 0) {
+      const buildConfig = tl.getVariable("BuildConfiguration");
+      const buildPlaform = tl.getVariable("BuildPlatform");
+      const testRunTitle = "Apex Test Run";
 
-    const tp: tl.TestPublisher = new tl.TestPublisher("JUnit");
-    tp.publish(
-      junitResultFiles,
-      "true",
-      buildPlaform,
-      buildConfig,
-      testRunTitle,
-      "true",
-      "sfpowerscripts-apextests"
-    );
-    //Remove the directory, so that other post execution scripts dont upload the same test results again and duplicate
-    fs.removeSync(resultsDir);
+      const tp: tl.TestPublisher = new tl.TestPublisher("JUnit");
+      tp.publish(
+        matchingTestResultsFiles,
+        "true",
+        buildPlaform,
+        buildConfig,
+        testRunTitle,
+        "true",
+        "sfpowerscripts-apextests"
+      );
+
+      //Write a flag file causing other post jobs to skip
+      fs.writeJSONSync(duplicateCheckFile, { testsPublished: true });
+    }
+  } else {
+    console.log("Skipping Post Job as results are already published");
   }
 }
 
