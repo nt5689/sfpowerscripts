@@ -47,23 +47,5 @@ async function run() {
     AppInsights.trackExcepiton("sfpwowerscript-triggerapextest-task",err);    
     tl.setResult(tl.TaskResult.Failed, err.message);
   }
-  finally
-  {
-    publishTestResults(test_options['outputdir']);
-  }
 }
-
-function publishTestResults(resultsDir: string): void {
-  const buildConfig = tl.getVariable('BuildConfiguration');
-  const buildPlaform = tl.getVariable('BuildPlatform');
-  const testRunTitle = "Apex Test Run";
-  const matchingTestResultsFiles: string[] = tl.findMatch(resultsDir, '*-junit.xml');
-  if (!matchingTestResultsFiles || matchingTestResultsFiles.length === 0) {
-      tl.warning('No test result files were found.');
-  } else {
-      const tp: tl.TestPublisher = new tl.TestPublisher('JUnit');
-      tp.publish(matchingTestResultsFiles, 'false', buildPlaform, buildConfig, testRunTitle, 'true', "sfpowerscripts-apextests");
-  }
-}
-
 run();

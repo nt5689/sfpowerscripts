@@ -85,5 +85,11 @@
         "Node": {
             "target": "TriggerApexTestTask/TriggerApexTest.js"
         }
-    }
+    },
+    "postjobexecution": {
+        "Node": {
+          "target": "TriggerApexTestTask/PostTriggerApexTest.js",
+          "argumentFormat": ""
+        }
+      }
 }
