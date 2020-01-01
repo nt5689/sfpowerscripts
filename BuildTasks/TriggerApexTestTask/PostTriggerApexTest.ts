@@ -23,7 +23,19 @@ function publishTestResults(resultsDir: string): void {
       "*-junit.xml"
     );
 
+    
+
     if (matchingTestResultsFiles && matchingTestResultsFiles.length > 0) {
+
+
+      tl.command(
+        "artifact.upload",
+        { artifactname: `Apex Test Results` },
+        resultsDir
+      );
+
+
+
       const buildConfig = tl.getVariable("BuildConfiguration");
       const buildPlaform = tl.getVariable("BuildPlatform");
       const testRunTitle = "Apex Test Run";
