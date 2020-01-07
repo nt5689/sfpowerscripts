@@ -35,6 +35,7 @@
     }
   ],
   "public": false,
+  "baseUri": "https://localhost:3000",
   "targets": [
     {
       "id": "Microsoft.VisualStudio.Services.Cloud"
