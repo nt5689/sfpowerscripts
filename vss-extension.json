@@ -142,7 +142,7 @@
       "addressable": true
     },
     {
-      "path": "Hub",
+      "path": "UI",
       "addressable": true
     }
   ],
@@ -159,24 +159,9 @@
       ],
       "properties": {
         "name": "SFPowerscripts Hub",
-        "uri": "Hub/PipelineHub/PipelineHub.html",
+        "uri": "UI/PipelineHub/PipelineHub.html",
         "icon": "asset://static/sample-icon.png",
         "supportsMobile": true
-      }
-    },
-    {
-      "id": "sfpowerscripts-build-status-section",
-      "type": "ms.vss-build-web.build-results-section",
-      "description": "Sfpowerscripts build results tab",
-      "targets": [
-        ".build-info-tab",
-        "ms.vss-build-web.build-results-summary-tab"
-      ],
-      "properties": {
-        "name": "Build Status",
-        "uri": "Hub/PipelineHub/PipelineHub.html",
-        "order": 20,
-        "height": 500
       }
     },
     {
@@ -185,8 +170,8 @@
       "description": "A tab contributing to build results view",
       "targets": ["ms.vss-build-web.build-results-view"],
       "properties": {
-        "name": "Build Info 2",
-        "uri": "Hub/PipelineHub/PipelineHub.html"
+        "name": "SFPowerScripts Build Info",
+        "uri": "UI/BuildInfoTab/PipelineHub.html"
       }
     },
     {

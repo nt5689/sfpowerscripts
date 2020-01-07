@@ -5,8 +5,8 @@ const CopyWebpackPlugin = require("copy-webpack-plugin");
 // Webpack entry points. Mapping from resulting bundle name to the source file entry.
 const entries = {};
 
-// Loop through subfolders in the "Hub" folder and add an entry for each one
-const hubDir = path.join(__dirname, "Hub");
+// Loop through subfolders in the "UI" folder and add an entry for each one
+const hubDir = path.join(__dirname, "UI");
 fs.readdirSync(hubDir).filter(dir => {
     if (fs.statSync(path.join(hubDir, dir)).isDirectory()) {
         entries[dir] = "./" + path.relative(process.cwd(), path.join(hubDir, dir, dir));
@@ -17,7 +17,7 @@ fs.readdirSync(hubDir).filter(dir => {
 module.exports = {
     entry: entries,
     output: {
-        path: path.resolve(__dirname, 'build/Hub'),
+        path: path.resolve(__dirname, 'build/UI'),
         filename: "[name]/[name].js"
     },
     resolve: {
@@ -56,6 +56,6 @@ module.exports = {
         ]
     },
     plugins: [
-        new CopyWebpackPlugin([ { from: "**/*.html", context: "Hub" }])
+        new CopyWebpackPlugin([ { from: "**/*.html", context: "UI" }])
     ]
 };

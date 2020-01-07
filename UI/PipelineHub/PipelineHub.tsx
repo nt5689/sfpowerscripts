@@ -13,7 +13,7 @@ import { OverviewTab } from "./OverviewTab";
 import { EnvironmentTab } from "./EnvironmentTab";
 import { CodeQualityTab } from "./CodeQualityTab";
 import { SupportTab } from "./SupportTab";
-import { showRootComponent } from "./Common";
+import { showRootComponent } from "../Common";
 import { ProjectTab } from "./ProjectTab";
 
 interface IHubContentState {

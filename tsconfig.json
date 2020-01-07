@@ -8,8 +8,8 @@
         "noImplicitThis": true,
         "strict": true,
         "target": "es6",
-        "rootDir": "Hub/",
-        "outDir": "build/Hub/",
+        "rootDir": "UI",
+        "outDir": "build/UI/",
         "jsx": "react",
         "lib": [
           "es5",
@@ -23,6 +23,6 @@
         
     },
     "include": [
-        "Hub"
+        "UI"
       ]
 }
