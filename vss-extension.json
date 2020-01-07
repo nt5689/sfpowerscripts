@@ -180,6 +180,16 @@
       }
     },
     {
+      "id": "sfpowerscripts-build-info-tab",
+      "type": "ms.vss-build-web.build-results-tab",
+      "description": "A tab contributing to build results view",
+      "targets": ["ms.vss-build-web.build-results-view"],
+      "properties": {
+        "name": "Build Info 2",
+        "uri": "Hub/PipelineHub/PipelineHub.html"
+      }
+    },
+    {
       "id": "sfpowerscripts-salesforce-connection",
       "description": "Credentials for task invoking Salesforce using SFPowerscripts",
       "type": "ms.vss-endpoint.service-endpoint-type",
