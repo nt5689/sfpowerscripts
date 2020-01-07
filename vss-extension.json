@@ -165,6 +165,21 @@
       }
     },
     {
+      "id": "sfpowerscripts-build-status-section",
+      "type": "ms.vss-build-web.build-results-section",
+      "description": "Sfpowerscripts build results tab",
+      "targets": [
+        ".build-info-tab",
+        "ms.vss-build-web.build-results-summary-tab"
+      ],
+      "properties": {
+        "name": "Build Status",
+        "uri": "Hub/PipelineHub/PipelineHub.html",
+        "order": 20,
+        "height": 500
+      }
+    },
+    {
       "id": "sfpowerscripts-salesforce-connection",
       "description": "Credentials for task invoking Salesforce using SFPowerscripts",
       "type": "ms.vss-endpoint.service-endpoint-type",
