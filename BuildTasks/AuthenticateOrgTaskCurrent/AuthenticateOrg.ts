@@ -3,21 +3,36 @@ import child_process = require("child_process");
 import * as secureFilesCommon from "../Common/SecureFileHelpers";
 import { isNullOrUndefined } from "util";
 import { AppInsights } from "../Common/AppInsights";
+import fs = require("fs-extra");
+import path = require("path");
+const nanoid = require('nanoid')
+
 
 async function run() {
   try {
     const method: string = tl.getInput("method", true);
-    const username: string = tl.getInput("username", true);
     const isDevHub: boolean = tl.getBoolInput("isdevhub", true);
     const alias: string = tl.getInput("alias", true);
 
     AppInsights.setupAppInsights(tl.getBoolInput("isTelemetryEnabled",true));
     AppInsights.trackTask("sfpwowerscript-authenticateorg-task");
 
+
+    if (tl.getVariable("Agent.OS") == "Windows_NT") {
+    
+      tl.debug("Writing key.json");
+      let keyFilePath=path.join(process.env.USERPROFILE,'.sfdx','key.json');
+      let keyObj={};
+      keyObj["service"]="sfdx";
+      keyObj["account"]="local";
+      keyObj["key"]=nanoid(32);
+      fs.writeJSONSync(keyFilePath,keyObj);
+    }
+
     if (method == "JWT") {
       const jwt_key_file: string = tl.getInput("jwt_key_file", true);
       const clientid: string = tl.getInput("clientid", true);
-
+      const username: string = tl.getInput("username", true);
       const secureFileHelpers: secureFilesCommon.SecureFileHelpers = new secureFilesCommon.SecureFileHelpers();
       const jwt_key_filePath: string = await secureFileHelpers.downloadSecureFile(
         jwt_key_file
@@ -28,6 +43,7 @@ async function run() {
       AppInsights.trackTaskEvent("sfpwowerscript-authenticateorg-task","authUsingJWT");
 
     } else if (method == "Credentials") {
+      const username: string = tl.getInput("username", true);
       const password: string = tl.getInput("password", true);
       const securitytoken: string = tl.getInput("securitytoken", false);
 
@@ -35,9 +51,20 @@ async function run() {
 
       AppInsights.trackTaskEvent("sfpwowerscript-authenticateorg-task","authUsingCreds");
     }
+    else if (method == "ServiceConnection")
+    {
+     let connection:string = tl.getInput("salesforce_connection", true);
+     const username: string = tl.getEndpointAuthorizationParameter(connection,"username", true);
+     const password: string = tl.getEndpointAuthorizationParameter(connection,"password", true);
+     const securitytoken: string = tl.getEndpointAuthorizationParameter(connection,"securitytoken", false);
+     const isDevHub: boolean = tl.getEndpointAuthorizationParameter(connection,"environment", false)=='Production'?true:false;
+    
+     authUsingCreds(isDevHub, alias, username, password, securitytoken);
+     AppInsights.trackTaskEvent("sfpwowerscript-authenticateorg-task","authUsingConn");
+    }
   } catch (err) {
     tl.setResult(tl.TaskResult.Failed, err.message);
-    AppInsights.trackExcepiton("sfpwowerscript-authenticateorg-task",err);
+    AppInsights.trackExcepiton("sfpwowerscript-authenticateorg-task");
   }
 }
 

@@ -5,6 +5,7 @@
         "sourceRoot": "./"
     },
     "files": [
-        "AuthenticateOrg.ts"
+        "ExportSourceFromAnOrg.ts",
+        "ExportSourceFromAnOrgImpl.ts"
     ]
   }
