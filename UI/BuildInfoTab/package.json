@@ -11,9 +11,13 @@
     "azure-devops-extension-sdk": "~2.0.11",
     "azure-devops-ui": "~1.157.0",
     "react": "~16.8.1",
-    "react-dom": "~16.8.1"
+    "react-dom": "~16.8.1",
+    "xml2js": "^0.4.22",
+    "axios": "^0.19.1"
+
   },
   "devDependencies": {
-    "@types/node": "^12.7.2"
+    "@types/node": "^12.7.2",
+    "@types/xml2js": "^0.4.5"
   }
 }
