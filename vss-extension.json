@@ -35,7 +35,7 @@
     }
   ],
   "public": false,
-  "baseUri": "https://localhost:3000",
+  "baseUri": "https://localhost:3000/build/",
   "targets": [
     {
       "id": "Microsoft.VisualStudio.Services.Cloud"
@@ -172,7 +172,7 @@
       "targets": ["ms.vss-build-web.build-results-view"],
       "properties": {
         "name": "SFPowerScripts Build Info",
-        "uri": "UI/BuildInfoTab/PipelineHub.html"
+        "uri": "UI/BuildInfoTab/BuildInfoTab.html"
       }
     },
     {
