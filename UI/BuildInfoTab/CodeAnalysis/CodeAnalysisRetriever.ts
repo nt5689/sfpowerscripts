@@ -1,16 +1,12 @@
 import { BuildRestClient } from "azure-devops-extension-api/Build";
-const axios = require("axios");
+import * as SDK from "azure-devops-extension-sdk";
 
 export default class CodeAnalysisRetriever {
   client: BuildRestClient;
   projectId: string;
   buildId: number;
 
-   myInit = {
-    method: "HEAD",
-    mode: "no-cors"
-  };
-
+ 
 
   constructor(client: BuildRestClient, projectId: string, buildId: number) {
     this.client = client;
@@ -27,17 +23,26 @@ export default class CodeAnalysisRetriever {
       "pmd_analysis_results"
     );
 
+    let accessToken = await SDK.getAccessToken();
+
     for (let i = 0; i < codeAnalysisAttachement.length; i++) {
-      console.log(codeAnalysisAttachement[i].name);
-      console.log(codeAnalysisAttachement[i]._links);
 
-     
-     
-
-      let myRequest = new Request(codeAnalysisAttachement[i]._links, { mode: "no-cors"});
-
-      let response: Response = await fetch(myRequest)
+  
+      var headers = new Headers();
+      headers.append(
+        "Authorization",
+        `Bearer ${accessToken}`
+      );
+      let requestOption:RequestInit = {
+        method: "GET",
+        headers: headers,
+        redirect: "follow"
+      };
+      let request = new Request(codeAnalysisAttachement[i]._links['self']['href'],requestOption);
+      let response: Response = await fetch(request);
       let result = await response.text();
+
+    
       analysisArtifacts.push(result);
     }
     return analysisArtifacts;

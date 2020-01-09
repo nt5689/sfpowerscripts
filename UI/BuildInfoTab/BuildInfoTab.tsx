@@ -104,6 +104,8 @@ class BuildInfoTab extends React.Component<{}, IBuildInfoTabState> {
     SDK.init();
     await SDK.ready();
 
+    
+ 
     this.setState({ isDataLoaded: false });
 
     const buildInfo = await SDK.getService<IBuildPageDataService>(
