@@ -6,26 +6,40 @@ export default class CodeAnalysisRetriever {
   projectId: string;
   buildId: number;
 
+   myInit = {
+    method: "HEAD",
+    mode: "no-cors"
+  };
+
+
   constructor(client: BuildRestClient, projectId: string, buildId: number) {
     this.client = client;
     this.projectId = projectId;
     this.buildId = buildId;
   }
 
-  public async downloadCodeAnalysisArtifact():Promise<string[]> {
+  public async downloadCodeAnalysisArtifact(): Promise<string[]> {
+    let analysisArtifacts: string[] = [];
 
-    let analysisArtifacts:string[]=[];
+    const codeAnalysisAttachement = await this.client.getAttachments(
+      this.projectId,
+      this.buildId,
+      "pmd_analysis_results"
+    );
 
-    const codeAnalysisAttachement = await this.client.getAttachments(this.projectId,this.buildId,'pmd_analysis_results');
+    for (let i = 0; i < codeAnalysisAttachement.length; i++) {
+      console.log(codeAnalysisAttachement[i].name);
+      console.log(codeAnalysisAttachement[i]._links);
 
-   for(let i=0; i<codeAnalysisAttachement.length;i++)
-   {
-    console.log(codeAnalysisAttachement[i].name);
-    console.log(codeAnalysisAttachement[i]._links);
-    let response:string = await axios.get(codeAnalysisAttachement[i]._links);
-    analysisArtifacts.push(response);
+     
+     
 
-   }
+      let myRequest = new Request(codeAnalysisAttachement[i]._links, { mode: "no-cors"});
+
+      let response: Response = await fetch(myRequest)
+      let result = await response.text();
+      analysisArtifacts.push(result);
+    }
     return analysisArtifacts;
   }
 }
