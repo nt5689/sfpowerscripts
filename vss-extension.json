@@ -41,7 +41,7 @@
       "id": "Microsoft.VisualStudio.Services.Cloud"
     }
   ],
-  "scopes": [],
+  "scopes": ["vso.build_execute"],
   "categories": ["Azure Pipelines"],
   "content": {
     "details": {
