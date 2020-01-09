@@ -3,3 +3,14 @@
 .sampsfpowerscripts-page {
     font-size: $fontSizeM;
 }
+
+.flex-column {
+    font-size: $fontSizeM;
+    padding-top: "300px";
+}
+.centered {
+    height: 100vh; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }

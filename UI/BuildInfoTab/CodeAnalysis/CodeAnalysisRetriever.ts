@@ -12,21 +12,20 @@ export default class CodeAnalysisRetriever {
     this.buildId = buildId;
   }
 
-  public async downloadCodeAnalysisArtifact():Promise<string> {
-    const codeAnalysisArtifact = await this.client.getArtifact(
-      this.projectId,
-      this.buildId,
-      "Code Analysis Results"
-    );
-    const response = await axios.get(codeAnalysisArtifact.resource.downloadUrl);
+  public async downloadCodeAnalysisArtifact():Promise<string[]> {
 
-    // var zip = new admzip(response.data);
-    // var zipEntries = zip.getEntries();
-    // console.log(zipEntries.length);
+    let analysisArtifacts:string[]=[];
 
-    // zipEntries.forEach(entry => {
-    //   console.log(entry.toString());
-    // });
-    return "";
+    const codeAnalysisAttachement = await this.client.getAttachments(this.projectId,this.buildId,'pmd_analysis_results');
+
+   for(let i=0; i<codeAnalysisAttachement.length;i++)
+   {
+    console.log(codeAnalysisAttachement[i].name);
+    console.log(codeAnalysisAttachement[i]._links);
+    let response:string = await axios.get(codeAnalysisAttachement[i]._links);
+    analysisArtifacts.push(response);
+
+   }
+    return analysisArtifacts;
   }
 }
