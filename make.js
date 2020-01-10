@@ -203,6 +203,7 @@ updateExtensionManifest = function(dir, options, isOriginalFile) {
     manifest.id = "sfpowerscripts" + "-" + "review";
     manifest.name = "sfpowerscripts" + " (" + "review" + ")";
     manifest.public = false;
+    manifest.baseUri= "https://localhost:3000/build/";
   } else {
     manifest.id = "sfpowerscripts";
     manifest.name = "sfpowerscripts";
