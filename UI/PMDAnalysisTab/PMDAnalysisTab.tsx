@@ -1,4 +1,4 @@
-import "./BuildInfoTab.scss";
+import "./PMDAnalysisTab.scss";
 
 import * as React from "react";
 import * as SDK from "azure-devops-extension-sdk";
@@ -11,7 +11,6 @@ import {
   Table,
   TableColumnLayout,
   ColumnFill,
-  ISimpleTableCell
 } from "azure-devops-ui/Table";
 
 import { Page } from "azure-devops-ui/Page";
@@ -21,65 +20,62 @@ import {
   BuildRestClient,
   IBuildPageDataService,
   BuildServiceIds,
-  BuildArtifact
 } from "azure-devops-extension-api/Build";
 import CodeAnalysisRetriever from "./CodeAnalysis/CodeAnalysisRetriever";
 import CodeAnalysisArtifactProcessor, {
-  CodeAnalysisResult
+  CodeAnalysisResult,
+  CodeAnalyisDetail
 } from "./CodeAnalysis/CodeAnalysisArtifactProcessor";
-import Loader from "react-loader-spinner";
 
-import { ArrayItemProvider } from "azure-devops-ui/Utilities/Provider";
-import { Card } from "azure-devops-ui/Card";
-import { Button } from "azure-devops-ui/Button";
-import { ISimpleListCell } from "azure-devops-ui/Components/List/List.Props";
+import MetricsComponent from "../MetricsComponent/MetricsComponent";
 
 interface IBuildInfoTabState {
   isDataLoaded: boolean;
-}
-
-export interface ITableItem extends ISimpleTableCell {
-  name: ISimpleListCell;
   criticaldefects: number;
   violationCount: number;
   affectedFileCount: number;
+  details: CodeAnalyisDetail[];
 }
 
 class BuildInfoTab extends React.Component<{}, IBuildInfoTabState> {
   private itemProvider = new ObservableArray<
-    ITableItem | ObservableValue<ITableItem | undefined>
+    CodeAnalyisDetail | ObservableValue<CodeAnalyisDetail | undefined>
   >();
   private asyncColumns = [
     {
       columnLayout: TableColumnLayout.none,
-      id: "name",
-      name: "Name",
+      id: "filename",
+      name: "File Name",
       readonly: true,
       renderCell: renderSimpleCell,
-      width: 200
+      width: 500
     },
     {
       columnLayout: TableColumnLayout.none,
-      id: "criticaldefects",
-      name: "Critical Defects",
+      id: "beginLine",
+      name: "Line Number",
       readonly: true,
       renderCell: renderSimpleCell,
-      width: 200
+      width: 100
     },
     {
-      id: "violationCount",
-      name: "Violation Count",
+      id: "priority",
+      name: "Priority",
       readonly: true,
       renderCell: renderSimpleCell,
-      width: 200
+      width: 100,
+      sortProps: {
+        ariaLabelAscending: "Sorted low to high",
+        ariaLabelDescending: "Sorted high to low"
+      }
     },
     {
       columnLayout: TableColumnLayout.none,
-      id: "affectedFileCount",
-      name: "Affected Files",
+      id: "problem",
+      name: "Problem",
       readonly: true,
       renderCell: renderSimpleCell,
-      width: 200
+      width: 800
     },
 
     ColumnFill
@@ -87,12 +83,17 @@ class BuildInfoTab extends React.Component<{}, IBuildInfoTabState> {
 
   accessToken = "0";
   results: CodeAnalysisResult[] | undefined = [];
+  result: CodeAnalysisResult | undefined = undefined;
 
   constructor(props: {}) {
     super(props);
 
     this.state = {
-      isDataLoaded: false
+      isDataLoaded: false,
+      criticaldefects: 0,
+      violationCount: 0,
+      affectedFileCount: 0,
+      details: []
     };
   }
 
@@ -104,21 +105,12 @@ class BuildInfoTab extends React.Component<{}, IBuildInfoTabState> {
     SDK.init();
     await SDK.ready();
 
-    
- 
     this.setState({ isDataLoaded: false });
 
     const buildInfo = await SDK.getService<IBuildPageDataService>(
       BuildServiceIds.BuildPageDataService
     );
     const buildPageData = await buildInfo.getBuildPageData();
-    console.log(buildPageData);
-
-    console.log("Find Build Number");
-
-    console.log("Build Number:" + buildPageData!.build!.buildNumber);
-    console.log("Build Id:" + buildPageData!.build!.id);
-    console.log("Project Id: " + buildPageData!.definition!.project.id);
     const client = getClient(BuildRestClient);
 
     this.setState({ isDataLoaded: true });
@@ -132,53 +124,52 @@ class BuildInfoTab extends React.Component<{}, IBuildInfoTabState> {
     var codeAnalysisReport: string[] = await codeAnalysisRetriever.downloadCodeAnalysisArtifact();
 
     let codeAnalysisProcessor: CodeAnalysisArtifactProcessor = new CodeAnalysisArtifactProcessor(
-      codeAnalysisReport
+      codeAnalysisReport[0]
     );
+    this.result = await codeAnalysisProcessor.processCodeQualityFromArtifact();
+    this.setState({
+      isDataLoaded: false,
+      criticaldefects: this.result.criticaldefects,
+      violationCount: this.result.violationCount,
+      affectedFileCount: this.result.affectedFileCount,
+      details: this.result.details
+    });
 
-    for (let index = 0; index < codeAnalysisReport.length; index++) {
-
-      let result = await codeAnalysisProcessor.processCodeQualityFromArtifact();
-      let asyncRow = new ObservableValue<ITableItem | undefined>(undefined);
-      asyncRow.value = {
-        criticaldefects: result.criticaldefects,
-        violationCount: result.violationCount,
-        affectedFileCount: result.affectedFileCount,
-        name: {
-          text: "sfpowerkit_pmd_analysis"
-        }
-      };
-      this.itemProvider.push(asyncRow);
+    for (let i = 0; i < this.state.details.length; i++) {
+      if (this.state.details[i].priority <= 3) {
+        let asyncRow = new ObservableValue<CodeAnalyisDetail | undefined>(
+          undefined
+        );
+        asyncRow.value = this.state.details[i];
+        this.itemProvider.push(asyncRow);
+      }
     }
-
-    //Get Code Analysis Artifact
-    // Code Analysis Results
-    this.setState({ isDataLoaded: true });
   }
 
   public render(): JSX.Element {
-    const isLoaderToBeHidden = this.state.isDataLoaded;
-
     return (
-      <Page className="sfpowerscripts-page flex-grow">
-        <div className="page-content">
-          {isLoaderToBeHidden ? (
-            <div className="flex-column">
-              <Card
-                className="flex-grow bolt-table-card"
-                contentProps={{ contentPadding: false }}
-              >
-                <Table<{}>
-                  columns={this.asyncColumns}
-                  itemProvider={this.itemProvider}
-                  role="table"
-                />
-              </Card>
-            </div>
-          ) : (
-            <Loader className="centered" type="Oval" color="#00BFFF" />
-          )}
+      <div className="container">
+        <div className="flex-row">
+          <MetricsComponent
+            title={"Validation Count"}
+            value={this.state.violationCount}
+          />
+          <MetricsComponent
+            title={"Critical Defects"}
+            value={this.state.criticaldefects}
+          />
+          <MetricsComponent
+            title={"Affected FileCount"}
+            value={this.state.affectedFileCount}
+          />
         </div>
-      </Page>
+        <p>Critical and Major Defects Summary - Full Report Available in Artifacts</p>
+        <Table<{}>
+          columns={this.asyncColumns}
+          itemProvider={this.itemProvider}
+          role="table"
+        />
+      </div>
     );
   }
 }

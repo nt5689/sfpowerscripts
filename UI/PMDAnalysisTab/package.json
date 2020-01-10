@@ -1,6 +1,6 @@
 {
-  "name": "sfpwowerscript-pipeline-hub",
-  "description": "sfpwowerscript-pipeline-hub",
+  "name": "sfpowerscript-buildinfotab",
+  "description": "Build Info Tab for Sfpowerscripts",
   "repository": {
     "type": "git",
     "url": "https://github.com/azlamsalam/sfpowerscripts.git"
@@ -9,11 +9,13 @@
   "dependencies": {
     "azure-devops-extension-api": "~1.157.0",
     "azure-devops-extension-sdk": "~2.0.11",
-    "azure-devops-ui": "~1.157.0",
+    "azure-devops-ui": "^1.160.4",
     "react": "~16.8.1",
-    "react-dom": "~16.8.1"
+    "react-dom": "~16.8.1",
+    "xml2js": "^0.4.22"
   },
   "devDependencies": {
-    "@types/node": "^12.7.2"
+    "@types/node": "^12.7.2",
+    "@types/xml2js": "^0.4.5"
   }
 }

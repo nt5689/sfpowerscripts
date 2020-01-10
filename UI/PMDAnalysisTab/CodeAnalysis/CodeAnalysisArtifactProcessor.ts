@@ -1,10 +1,17 @@
 import xml2js = require("xml2js");
 
+export interface CodeAnalyisDetail {
+  filename: string;
+  beginLine: number;
+  priority: number;
+  problem: string;
+}
 export interface CodeAnalysisResult {
-  name:string;
+  name: string;
   violationCount: number;
   affectedFileCount: number;
   criticaldefects: number;
+  details: CodeAnalyisDetail[];
 }
 
 export default class CodeAnalysisArtifactProcessor {
@@ -14,13 +21,12 @@ export default class CodeAnalysisArtifactProcessor {
     this.reportContents = reportContents;
   }
 
-  public async processCodeQualityFromArtifact(): Promise<
-    CodeAnalysisResult 
-  > {
-    let name = 'sf-pmd-xml';
+  public async processCodeQualityFromArtifact(): Promise<CodeAnalysisResult> {
+    let name = "sf-pmd-xml";
     let affectedFileCount = 0;
     let violationCount = 0;
     let criticaldefects = 0;
+    let details: CodeAnalyisDetail[] = new Array<CodeAnalyisDetail>();
 
     xml2js.parseString(this.reportContents, (err, data) => {
       // If the file is not XML, or is not from PMD, return immediately
@@ -35,21 +41,37 @@ export default class CodeAnalysisArtifactProcessor {
       }
 
       data.pmd.file.forEach((file: any) => {
+        var i = 0;
         if (file.violation) {
           affectedFileCount++;
           violationCount += file.violation.length;
         }
       });
 
-      data.pmd.file[0].violation.forEach(
-        (element: { [x: string]: { [x: string]: number } }) => {
-          if (element["$"]["priority"] == 5) {
+      for (let i = 0; i < data.pmd.file.length; i++) {
+        data.pmd.file[i].violation.forEach(element => {
+          let detail: CodeAnalyisDetail = {
+            filename: data.pmd.file[i]["$"]["name"],
+            beginLine: element["$"]["beginline"],
+            priority: element["$"]["priority"],
+            problem: element["_"]
+          };
+
+          details.push(detail);
+
+          if (element["$"]["priority"] == 1) {
             criticaldefects++;
           }
-        }
-      );
+        });
+      }
     });
 
-    return { name, violationCount, affectedFileCount, criticaldefects };
+    return {
+      name,
+      violationCount,
+      affectedFileCount,
+      criticaldefects,
+      details
+    };
   }
 }
