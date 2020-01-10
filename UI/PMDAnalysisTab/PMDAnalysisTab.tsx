@@ -12,8 +12,6 @@ import {
   TableColumnLayout,
   ColumnFill,
 } from "azure-devops-ui/Table";
-
-import { Page } from "azure-devops-ui/Page";
 import { showRootComponent } from "../Common";
 import { getClient } from "azure-devops-extension-api";
 import {
@@ -37,7 +35,7 @@ interface IBuildInfoTabState {
   details: CodeAnalyisDetail[];
 }
 
-class BuildInfoTab extends React.Component<{}, IBuildInfoTabState> {
+class PMDAnalysisTab extends React.Component<{}, IBuildInfoTabState> {
   private itemProvider = new ObservableArray<
     CodeAnalyisDetail | ObservableValue<CodeAnalyisDetail | undefined>
   >();
@@ -174,4 +172,4 @@ class BuildInfoTab extends React.Component<{}, IBuildInfoTabState> {
   }
 }
 
-showRootComponent(<BuildInfoTab />);
+showRootComponent(<PMDAnalysisTab />);

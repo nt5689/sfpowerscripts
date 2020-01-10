@@ -139,11 +139,15 @@ function parseXmlReport(xmlReport: string): [number, number, number] {
       }
     });
 
-    data.pmd.file[0].violation.forEach(element => {
-      if (element["$"]["priority"] == 5) {
-        criticaldefects++;
-      }
-    });
+    for (let i = 0; i < data.pmd.file.length; i++) {
+      data.pmd.file[i].violation.forEach(element => {
+        if (element["$"]["priority"] == 1) {
+          criticaldefects++;
+        }
+      });
+    }
+
+
   });
 
   return [violationCount, fileCount, criticaldefects];
