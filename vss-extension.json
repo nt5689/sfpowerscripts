@@ -40,7 +40,7 @@
       "id": "Microsoft.VisualStudio.Services.Cloud"
     }
   ],
-  "scopes": ["vso.build_execute"],
+  "scopes": ["vso.build_execute","vso.release_manage","vso.serviceendpoint_manage"],
   "categories": ["Azure Pipelines"],
   "content": {
     "details": {
