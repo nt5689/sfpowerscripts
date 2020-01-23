@@ -82,12 +82,12 @@ async function run() {
 
     console.log(`Source Directory created at ${local_source_directory}`);
 
-    tl.debug(package_metadata_json.package_type);
-    console.log(package_metadata_json.package_type);
+    tl.debug(package_metadata.package_type);
+    console.log(package_metadata.package_type);
 
     if (
-      package_metadata_json.package_type === "source" ||
-      package_metadata_json.package_type === "unlocked"
+      package_metadata.package_type === "source" ||
+      package_metadata.package_type === "unlocked"
     ) {
       //Strinp https
       const removeHttps = input => input.replace(/^https?:\/\//, "");
@@ -115,7 +115,7 @@ async function run() {
       await git.checkout(package_metadata.sourceVersion);
 
       console.log(`Checked Out ${package_metadata.sourceVersion} sucessfully`);
-    } else if (package_metadata_json.package_type === "delta") {
+    } else if (package_metadata.package_type === "delta") {
       let delta_artifact_location = path.join(
         artifact_directory,
         artifact,

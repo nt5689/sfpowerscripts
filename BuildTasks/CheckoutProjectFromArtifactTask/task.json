@@ -8,7 +8,7 @@
   "author": "azlam.abdulsalam",
   "version": {
     "Major": 8,
-    "Minor": 3,
+    "Minor": 4,
     "Patch": 0
   },
   "runsOn": ["Agent"],
@@ -37,7 +37,7 @@
         "githubEnterprise": "GitHub Enterprise",
         "bitbucket": "BitBucket Cloud",
         "azureRepo": "Azure Repo",
-        "otherGit": "Other Git",
+        "otherGit": "Other Git"
       },
       "required": false,
       "helpMarkDown": "Select a version control provider from the dropdown",
