@@ -120,12 +120,12 @@ async function run() {
         "sfpowerscripts_delta_package"
       );
 
-      fs.copySync(this.local_source_directory, delta_artifact_location, {
+      fs.copySync(local_source_directory, delta_artifact_location, {
         overwrite: true
       });
     }
 
-    fs.readdirSync(this.local_source_directory).forEach(file => {
+    fs.readdirSync(local_source_directory).forEach(file => {
       console.log(file);
     });
 
