@@ -1,10 +1,8 @@
 import tl = require("azure-pipelines-task-lib/task");
-import child_process = require("child_process");
-var fs = require("fs");
+var fs = require("fs-extra");
 const path = require("path");
 import simplegit from "simple-git/promise";
 import { AppInsights } from "../Common/AppInsights";
-var shell = require("shelljs");
 
 async function run() {
   try {
