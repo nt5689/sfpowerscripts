@@ -114,17 +114,30 @@ async function run() {
 
       console.log(`Checked Out ${package_metadata.sourceVersion} sucessfully`);
     } else if (package_metadata_json["package_type"] == "delta") {
+
+
+
       let delta_artifact_location = path.join(
         artifact_directory,
         artifact,
         "sfpowerscripts_delta_package"
       );
 
+      tl.debug(`Delta Directory is at ${delta_artifact_location}`);
+
+      tl.debug("Files in Delta Location")
+      fs.readdirSync(delta_artifact_location).forEach(file => {
+        tl.debug(file);
+      });
+  
+
+      tl.debug("Copying Files to a proper directory")
       fs.copySync(local_source_directory, delta_artifact_location, {
         overwrite: true
       });
     }
 
+    tl.debug("Files in actual Location")
     fs.readdirSync(local_source_directory).forEach(file => {
       console.log(file);
     });

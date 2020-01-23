@@ -12,7 +12,7 @@
     "Patch": 0
   },
   "runsOn": ["Agent"],
-  "instanceNameFormat": "Checkout $(artifactname) from associated build pipeline",
+  "instanceNameFormat": "Checkout $(artifact) from associated build pipeline",
   "inputs": [
     {
       "name": "typeOfArtifact",
