@@ -128,7 +128,7 @@ async function run() {
       });
 
       tl.debug("Copying Files to a proper directory");
-      fs.copySync(local_source_directory, delta_artifact_location, {
+      fs.copySync(delta_artifact_location, local_source_directory,{
         overwrite: true
       });
     }
