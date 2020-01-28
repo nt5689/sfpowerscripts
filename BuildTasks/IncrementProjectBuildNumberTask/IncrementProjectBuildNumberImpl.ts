@@ -7,7 +7,9 @@ export default class IncrementProjectBuildNumberImpl {
   public constructor(
     private project_directory: string,
     private sfdx_package: string,
-    private segment
+    private segment: string,
+    private appendBuildNumber: boolean,
+    private runNumber: string
   ) {}
 
   public async exec(): Promise<string> {
@@ -48,8 +50,12 @@ export default class IncrementProjectBuildNumberImpl {
       throw new Error("NEXT not supported for build number");
     }
 
-    if (this.segment == "BuildNumber")
+    if (this.segment == "BuildNumber" && !this.appendBuildNumber)
       segments[3] = String(Number(segments[3]) + 1);
+
+    if (this.appendBuildNumber) {
+      segments[3] = this.runNumber;
+    }
 
     selected_package[
       "versionNumber"
@@ -57,11 +63,12 @@ export default class IncrementProjectBuildNumberImpl {
 
     console.log(`Updated Version : ${selected_package["versionNumber"]}`);
 
-    fs.writeFileSync(
-      project_config_path,
-      JSON.stringify(project_json, null, 4)
-    );
-
+    if (!this.appendBuildNumber) {
+      fs.writeFileSync(
+        project_config_path,
+        JSON.stringify(project_json, null, 4)
+      );
+    }
 
     return selected_package["versionNumber"];
   }
