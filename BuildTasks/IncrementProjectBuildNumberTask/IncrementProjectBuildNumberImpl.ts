@@ -1,5 +1,5 @@
 import child_process = require("child_process");
-import { isNullOrUndefined } from "util";
+import { isNullOrUndefined, isNumber } from "util";
 const fs = require("fs");
 const path = require("path");
 
@@ -9,7 +9,7 @@ export default class IncrementProjectBuildNumberImpl {
     private sfdx_package: string,
     private segment: string,
     private appendBuildNumber: boolean,
-    private runNumber: string
+    private buildNumber: string
   ) {}
 
   public async exec(): Promise<string> {
@@ -54,7 +54,13 @@ export default class IncrementProjectBuildNumberImpl {
       segments[3] = String(Number(segments[3]) + 1);
 
     if (this.appendBuildNumber) {
-      segments[3] = this.runNumber;
+      let numberToBeAppended = parseInt(this.buildNumber);
+
+      if (isNaN(numberToBeAppended))
+        throw new Error("BuildNumber should be a number");
+      else if (numberToBeAppended > 999)
+        throw new Error("BuildNumber should be less than 999");
+      else segments[3] = this.buildNumber;
     }
 
     selected_package[
