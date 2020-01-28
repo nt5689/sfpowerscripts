@@ -38,7 +38,7 @@ async function run() {
     let repo_localpath = tl.getVariable("build.repository.localpath");
   
 
-    if(commit_changes)
+    if(!appendBuildNumber && commit_changes)
     {
 
 
