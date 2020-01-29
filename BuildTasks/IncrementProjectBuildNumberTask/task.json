@@ -31,10 +31,10 @@
     {
       "name": "appendBuildNumber",
       "type": "boolean",
-      "label": "Set the build segment of the version number to the build number rather than incrmenenting",
+      "label": "Set the build segment of the version number to the build number rather than incremenenting",
       "defaultValue": false,
       "required": false,
-      "helpMarkDown": "Set the build segment of the version number to the build number rather than incrmenenting",
+      "helpMarkDown": "Set the build segment of the version number to the build number rather than incremenenting",
       "visibleRule": "segment = BuildNumber"
     },
     {

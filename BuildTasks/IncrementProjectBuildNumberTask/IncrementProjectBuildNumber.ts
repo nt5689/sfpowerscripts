@@ -41,7 +41,6 @@ async function run() {
     if(!appendBuildNumber && commit_changes)
     {
 
-
       child_process.execSync(" git config user.email sfpowerscripts@dxscale");
       child_process.execSync(" git config user.name sfpowerscripts");
       
