@@ -48,10 +48,11 @@
             "condition": "succeeded()",
             "task": {
               "id": "d8950cd3-2bf4-4b50-bb75-b9358f741951",
-              "versionSpec": "4.*",
+              "versionSpec": "5.*",
               "definitionType": "task"
             },
             "inputs": {
+              "salesforce_api_version": "",
               "sfdx_cli_version": "latest",
               "sfpowerkit_version": "latest",
               "plugins": "",
@@ -73,6 +74,7 @@
             },
             "inputs": {
               "method": "Credentials",
+              "salesforce_connection": "",
               "jwt_key_file": "",
               "username": "$(prod.user)",
               "password": "$(prod.password)",
@@ -174,7 +176,7 @@
       "fetchDepth": "0",
       "gitLfsSupport": "false",
       "reportBuildStatus": "true",
-      "connectedServiceId": "$GitHub_ddda4dd5$",
+      "connectedServiceId": "$GitHub_25be79e5$",
       "skipSyncSource": "false",
       "labelSourcesFormat": "$(build.buildNumber)",
       "labelSources": "0"
@@ -209,7 +211,7 @@
   "path": "\\",
   "type": "build",
   "queueStatus": "enabled",
-  "revision": 6,
+  "revision": 7,
   "createdDate": "",
   "project": "{}"
 }
