@@ -137,7 +137,7 @@
             {
               "environment": {},
               "taskId": "5eb34b28-fdd4-4904-9a3e-d3ff63130f16",
-              "version": "5.*",
+              "version": "7.*",
               "name": "Authenticate  $(env.name) using Credentials",
               "refName": "",
               "enabled": true,

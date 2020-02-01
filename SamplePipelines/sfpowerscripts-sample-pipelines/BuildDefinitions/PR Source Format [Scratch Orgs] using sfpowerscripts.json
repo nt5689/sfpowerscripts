@@ -88,7 +88,7 @@
             "condition": "succeeded()",
             "task": {
               "id": "5eb34b28-fdd4-4904-9a3e-d3ff63130f16",
-              "versionSpec": "5.*",
+              "versionSpec": "7.*",
               "definitionType": "task"
             },
             "inputs": {
